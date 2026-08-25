@@ -66,7 +66,7 @@ class ResettableWorldState {
 
   factory ResettableWorldState.fromJson(Map<String, dynamic> json) {
     return ResettableWorldState(
-      playerLocationId: json['playerLocationId'] as String? ?? 'lobby_reception',
+      playerLocationId: json['playerLocationId']?.toString() ?? 'lobby_reception',
       roomStates: _safeMap(json['roomStates']),
       npcPositions: _safeMap(json['npcPositions']),
       npcStates: _safeMap(json['npcStates']),
@@ -216,8 +216,8 @@ class GameState {
     }
 
     return GameState(
-      currentLoopNumber: (json['currentLoopNumber'] as num?)?.toInt() ?? 1,
-      elapsedLoopSeconds: (json['elapsedLoopSeconds'] as num?)?.toInt() ?? 0,
+      currentLoopNumber: int.tryParse(json['currentLoopNumber']?.toString() ?? '') ?? 1,
+      elapsedLoopSeconds: int.tryParse(json['elapsedLoopSeconds']?.toString() ?? '') ?? 0,
       lifecyclePhase: phase,
       worldState: ResettableWorldState.fromJson(_safeMap(json['worldState'])),
       persistentKnowledge: PersistentKnowledgeState.fromJson(_safeMap(json['persistentKnowledge'])),

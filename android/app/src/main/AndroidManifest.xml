@@ -6,7 +6,7 @@
     <application
         android:label="11:57 - The Last Check-In"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@android:drawable/sym_def_app_icon"
         android:hardwareAccelerated="true"
         android:allowBackup="false"
         android:supportsRtl="true">

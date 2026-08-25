@@ -10,6 +10,7 @@ import '../../core/services/game_service.dart';
 import '../../core/services/knowledge_service.dart';
 import '../../core/services/time_loop_service.dart';
 import '../../shared/design/app_colors.dart';
+import '../../core/models/game_state.dart';
 import '../../shared/design/app_spacing.dart';
 import '../../shared/design/app_typography.dart';
 import '../../shared/widgets/app_button.dart';

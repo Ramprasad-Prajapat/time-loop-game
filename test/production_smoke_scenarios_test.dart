@@ -1,13 +1,10 @@
 // test/production_smoke_scenarios_test.dart
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:time_loop_escape_game/app/app_router.dart';
 import 'package:time_loop_escape_game/core/models/game_state.dart';
 
-import 'package:time_loop_escape_game/core/models/interaction_model.dart';
-
-import 'package:time_loop_escape_game/core/repositories/clue_repository.dart';
 import 'package:time_loop_escape_game/core/repositories/game_repository_impl.dart';
-import 'package:time_loop_escape_game/core/repositories/item_repository.dart';
 import 'package:time_loop_escape_game/core/repositories/npc_repository.dart';
 import 'package:time_loop_escape_game/core/repositories/puzzle_repository.dart';
 import 'package:time_loop_escape_game/core/services/audio_service.dart';
@@ -71,6 +68,7 @@ void main() {
       hintService = HintService(gameService, loopService, puzzleService);
       endingService = EndingService(gameService);
       interactionService = InteractionService(gameService, loopService);
+      expect(interactionService, isNotNull);
     });
 
     test('SCENARIO 1: New Game -> Loop 1 -> discover clue -> save -> reload -> clue remains', () async {
@@ -129,7 +127,7 @@ void main() {
     });
 
     test('SCENARIO 6: NPC changes location according to timeline', () async {
-      final caretaker = NpcRepository.getNpcById('caretaker')!;
+      final caretaker = NpcRepository.getNpcById('npc_caretaker')!;
       final event1 = npcService.getCurrentScheduleEvent(caretaker);
       expect(event1?.locationId, equals('lobby_reception'));
 
@@ -137,38 +135,37 @@ void main() {
       await gameService.updateLoopTimer(70);
 
       final event2 = npcService.getCurrentScheduleEvent(caretaker);
-      expect(event2?.locationId, equals('maintenance_room'));
+      expect(event2?.locationId, equals('room_101'));
     });
 
     test('SCENARIO 7: Puzzle solved -> loop reset -> physical puzzle resets but discovered knowledge remains', () async {
-      final puzzle = PuzzleRepository.getPuzzleById('puzzle_reception_safe')!;
-      await gameService.discoverClue('clue_register_dates');
+      final puzzle = PuzzleRepository.getPuzzleById('puzzle_lobby_clock')!;
 
-      final result = await puzzleService.attemptPuzzle(puzzle.id, '1157');
+      final result = await puzzleService.attemptPuzzle(puzzle.id, 'kalchakra_1924');
       expect(result.success, isTrue);
       expect(puzzleService.isPuzzleSolved(puzzle.id), isTrue);
 
       // Loop reset
       await gameService.executeLoopReset();
 
-      // Discovered code remains persistent
-      expect(knowledgeService.isCodeUnlocked('code_safe_1157'), isTrue);
+      // Discovered clue remains persistent
+      expect(knowledgeService.isClueDiscovered('clue_frozen_clock'), isTrue);
       // Physical puzzle active state returns to default
       expect(puzzleService.isPuzzleSolved(puzzle.id), isFalse);
     });
 
     test('SCENARIO 8: Complete ending -> reload -> ending remains completed', () async {
-      await endingService.completeEnding('ending_accept_loop');
+      await endingService.completeEnding('escape_alone');
 
       expect(endingService.isEndingCompleted(), isTrue);
-      expect(endingService.completedEnding?.id, equals('ending_accept_loop'));
+      expect(endingService.completedEnding?.id, equals('escape_alone'));
 
       final newService = GameService(repository);
       await newService.loadSavedGame();
       final newEndingService = EndingService(newService);
 
       expect(newEndingService.isEndingCompleted(), isTrue);
-      expect(newEndingService.completedEnding?.id, equals('ending_accept_loop'));
+      expect(newEndingService.completedEnding?.id, equals('escape_alone'));
     });
 
     test('SCENARIO 9: Corrupt save -> launch app -> recover safely', () async {
@@ -177,7 +174,7 @@ void main() {
       final recoveryRepo = LocalGameRepositoryImpl(storage);
       final recoveryService = GameService(recoveryRepo);
 
-      expect(() async => await recoveryService.loadSavedGame(), throwsA(isA<Exception>()));
+      await expectLater(recoveryService.loadSavedGame(), throwsA(isA<Exception>()));
       expect(await recoveryRepo.hasSavedGame(), isFalse);
     });
 

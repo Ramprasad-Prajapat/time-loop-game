@@ -21,7 +21,7 @@ class AppTheme {
         onSurface: AppColors.textPrimary,
         error: AppColors.danger,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.panel,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -29,7 +29,7 @@ class AppTheme {
           side: const BorderSide(color: AppColors.lineBorder),
         ),
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: AppColors.panel,
         elevation: 16,
         shape: RoundedRectangleBorder(

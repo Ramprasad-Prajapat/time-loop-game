@@ -46,7 +46,7 @@ class TimeLoopService extends ChangeNotifier {
 
   /// Initialize deterministic scheduled world events for the 5-minute loop timeline.
   void _initializeTimelineSchedule() {
-    _timelineEvents = const [
+    _timelineEvents = [
       TimelineEvent(
         id: 'event_clock_chime',
         triggerTimeSeconds: 5,

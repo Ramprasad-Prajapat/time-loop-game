@@ -244,4 +244,17 @@ class GameService extends ChangeNotifier {
       throw StorageException('Failed to persist ending completion: ${e.toString()}');
     }
   }
+
+  // New helper to add a physical item to inventory (resettable world state).
+  Future<void> addPhysicalItem(String itemId) async {
+    final currentIds = List<String>.from(_currentState.worldState.physicalInventoryItemIds);
+    if (!currentIds.contains(itemId)) {
+      currentIds.add(itemId);
+      final updatedWorld = _currentState.worldState.copyWith(physicalInventoryItemIds: currentIds);
+      _currentState = _currentState.copyWith(worldState: updatedWorld);
+      await _repository.saveGameState(_currentState);
+      notifyListeners();
+    }
+  }
+
 }

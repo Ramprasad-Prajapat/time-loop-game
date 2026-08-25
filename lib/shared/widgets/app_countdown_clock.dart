@@ -30,24 +30,19 @@ class AppCountdownClock extends StatelessWidget {
 
     // Ambient stage color determination according to research section 15
     Color stageColor;
-    String stageText;
     AppPillColor pillScheme;
 
     if (elapsedSeconds < 60) {
       stageColor = AppColors.stageStartGold;
-      stageText = 'STAGE 1 — AMBER AMBIENT';
       pillScheme = AppPillColor.gold;
     } else if (elapsedSeconds < 240) {
       stageColor = AppColors.stageMidBlue;
-      stageText = 'STAGE 2 — MOONLIGHT BLUE';
       pillScheme = AppPillColor.cyan;
     } else if (remainingSeconds > 0) {
       stageColor = AppColors.stageFinalRed;
-      stageText = 'FINAL MINUTE — RESET IMMINENT';
       pillScheme = AppPillColor.danger;
     } else {
       stageColor = AppColors.stageResetWhite;
-      stageText = '12:00 TEMPORAL RESET';
       pillScheme = AppPillColor.purple;
     }
 

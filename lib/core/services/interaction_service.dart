@@ -1,6 +1,5 @@
 // lib/core/services/interaction_service.dart
 import 'package:flutter/foundation.dart';
-import '../models/game_state.dart';
 import '../models/interaction_model.dart';
 import 'game_service.dart';
 import 'time_loop_service.dart';
@@ -89,17 +88,11 @@ class InteractionService extends ChangeNotifier {
 
     // Process physical item pickup (RESETTABLE: resets at 12:00)
     if (interaction.itemToPickup != null) {
-      final currentInventory = List<String>.from(_gameService.currentState.worldState.physicalInventoryItemIds);
-      if (!currentInventory.contains(interaction.itemToPickup!)) {
-        currentInventory.add(interaction.itemToPickup!);
-        final updatedWorld = _gameService.currentState.worldState.copyWith(
-          physicalInventoryItemIds: currentInventory,
-        );
-        _gameService.updateRoomState(interaction.targetLocationId, {
-          'pickedUpItem': interaction.itemToPickup,
-          'lastInteractionTime': _timeLoopService.elapsedSeconds,
-        });
-      }
+      await _gameService.addPhysicalItem(interaction.itemToPickup!);
+      _gameService.updateRoomState(interaction.targetLocationId, {
+        'pickedUpItem': interaction.itemToPickup,
+        'lastInteractionTime': _timeLoopService.elapsedSeconds,
+      });
     }
 
     notifyListeners();

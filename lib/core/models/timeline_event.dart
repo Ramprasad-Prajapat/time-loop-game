@@ -1,5 +1,5 @@
 // lib/core/models/timeline_event.dart
-import '../design/app_colors.dart';
+import '../../shared/design/app_colors.dart';
 import 'package:flutter/material.dart';
 
 /// 5-minute timeline stage enum.
@@ -30,15 +30,15 @@ extension TimelineStageX on TimelineStage {
   Color get color {
     switch (this) {
       case TimelineStage.calm:
-        return AppColors.stageGreen;
+        return AppColors.stageStartAmber;
       case TimelineStage.routineShift:
-        return AppColors.stageCyan;
+        return AppColors.accentCyan;
       case TimelineStage.tension:
-        return AppColors.stageGold;
+        return AppColors.accentGold;
       case TimelineStage.criticalDanger:
-        return AppColors.stageOrange;
+        return AppColors.stageFinalRed;
       case TimelineStage.temporalCollapse:
-        return AppColors.stagePurple;
+        return AppColors.accentPurple;
     }
   }
 }

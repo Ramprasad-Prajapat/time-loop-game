@@ -37,4 +37,13 @@ class KnowledgeService extends ChangeNotifier {
 
   List<ClueItem> get contradictions =>
       discoveredClues.where((c) => c.status == KnowledgeStatus.contradiction).toList();
+
+  // Compatibility API for tests
+  bool isClueDiscovered(String id) {
+    return _gameService.currentState.persistentKnowledge.discoveredClueIds.contains(id);
+  }
+
+  bool isCodeUnlocked(String id) {
+    return _gameService.currentState.persistentKnowledge.unlockedCodeIds.contains(id);
+  }
 }

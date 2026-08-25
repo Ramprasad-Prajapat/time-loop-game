@@ -58,8 +58,8 @@ void main() {
     test('6. Corrupted JSON is handled safely without crashing app', () async {
       await storage.setString('time_loop_save_game_v1', '{invalid_json_str: true,,,');
 
-      expect(
-        () async => await repository.loadSaveData(),
+      await expectLater(
+        repository.loadSaveData(),
         throwsA(isA<StorageException>()),
       );
       expect(await repository.hasSavedGame(), isFalse);
@@ -160,7 +160,6 @@ void main() {
 
     test('19. Save writes do not happen every timer tick', () async {
       await gameService.startNewGame();
-      var writeCount = 0;
 
       // Wrap repository save to count calls
       await gameService.updateLoopTimer(10);

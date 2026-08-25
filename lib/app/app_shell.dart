@@ -1,8 +1,7 @@
 // lib/app/app_shell.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../core/models/clue_item.dart';
-import '../core/models/game_state.dart';
+import '../core/models/timeline_event.dart';
 import '../core/repositories/clue_repository.dart';
 import '../core/repositories/item_repository.dart';
 import '../core/services/game_service.dart';

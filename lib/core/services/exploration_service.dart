@@ -86,15 +86,8 @@ class ExplorationService extends ChangeNotifier {
 
     // Process physical item pickup (RESETTABLE, can be anchored)
     if (interaction.itemToPickup != null) {
-      final currentPhysical = List<String>.from(_gameService.currentState.worldState.physicalInventoryItemIds);
-      if (!currentPhysical.contains(interaction.itemToPickup!)) {
-        currentPhysical.add(interaction.itemToPickup!);
-        final updatedWorld = _gameService.currentState.worldState.copyWith(
-          physicalInventoryItemIds: currentPhysical,
-        );
-        // Save to resettable world state
-        _gameService.updateRoomState(currentLocation.id, {'lastInteraction': interaction.id});
-      }
+      await _gameService.addPhysicalItem(interaction.itemToPickup!);
+      _gameService.updateRoomState(currentLocation.id, {'lastInteraction': interaction.id});
     }
 
     notifyListeners();

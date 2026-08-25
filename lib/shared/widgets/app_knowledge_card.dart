@@ -70,7 +70,7 @@ class AppKnowledgeCard extends StatelessWidget {
             summary,
             style: AppTypography.bodyMedium,
             maxLines: 2,
-            overflow: TextSpanOverflow.ellipsis,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

@@ -33,3 +33,6 @@ local.properties
 *.jks
 *.keystore
 key.properties
+*.zip
+*.hprof
+.flutter_temp/

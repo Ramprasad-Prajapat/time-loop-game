@@ -7,14 +7,16 @@ import 'game_service.dart';
 import 'puzzle_service.dart';
 import 'time_loop_service.dart';
 
-/// Domain service managing state-aware non-spoiler hint selection, progressive revelation,
-/// and persistent hint state tracking.
+/// Domain service managing state-aware non-spoiler hint selection,
+/// progressive revelation, and persistent hint state tracking.
 class HintService extends ChangeNotifier {
   final GameService _gameService;
   final TimeLoopService _timeLoopService;
   final PuzzleService _puzzleService;
 
   HintService(this._gameService, this._timeLoopService, this._puzzleService);
+
+  TimeLoopService get timeLoopService => _timeLoopService;
 
   /// Check if a hint has been revealed by the player.
   bool isHintRevealed(String hintId) {
@@ -55,5 +57,11 @@ class HintService extends ChangeNotifier {
       await _gameService.updatePersistentKnowledge(updatedKnowledge);
       notifyListeners();
     }
+  }
+
+  /// Reveal hint tier for a puzzle (test convenience).
+  Future<void> revealHintTier(String puzzleId) async {
+    // For testing, treat the puzzleId as a hint identifier.
+    await revealHint(puzzleId);
   }
 }

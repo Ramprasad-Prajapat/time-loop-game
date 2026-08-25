@@ -1,6 +1,5 @@
 // test/feedback_and_accessibility_test.dart
 import 'package:flutter_test/flutter_test.dart';
-import 'package:time_loop_escape_game/core/models/app_preferences.dart';
 import 'package:time_loop_escape_game/core/repositories/game_repository_impl.dart';
 import 'package:time_loop_escape_game/core/services/audio_service.dart';
 import 'package:time_loop_escape_game/core/services/feedback_service.dart';

@@ -114,4 +114,21 @@ class EndingService extends ChangeNotifier {
     notifyListeners();
     return ending;
   }
+
+  /// Check if an ending (or specific ending) has been completed.
+  bool isEndingCompleted([String? endingId]) {
+    final persistent = _gameService.currentState.persistentKnowledge;
+    if (endingId == null) {
+      return persistent.completedEndingId != null;
+    }
+    return persistent.completedEndingId == endingId ||
+        persistent.unlockedEndings.contains(endingId);
+  }
+
+  /// Get the currently completed ending definition if one has been completed.
+  EndingModel? get completedEnding {
+    final completedId = _gameService.currentState.persistentKnowledge.completedEndingId;
+    if (completedId == null) return null;
+    return EndingRepository.getEndingById(completedId);
+  }
 }

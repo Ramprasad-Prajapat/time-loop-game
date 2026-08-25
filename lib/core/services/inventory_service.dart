@@ -31,4 +31,16 @@ class InventoryService extends ChangeNotifier {
     await _gameService.setAnchoredItem(itemId);
     notifyListeners();
   }
+
+  /// Pickup a physical item and add it to the resettable inventory.
+  Future<void> pickupPhysicalItem(String itemId) async {
+    await _gameService.addPhysicalItem(itemId);
+    notifyListeners();
+  }
+
+  /// Check if a given item is currently in the resettable inventory.
+  bool isItemInInventory(String itemId) {
+    final ids = _gameService.currentState.worldState.physicalInventoryItemIds;
+    return ids.contains(itemId);
+  }
 }
