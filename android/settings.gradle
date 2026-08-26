@@ -1,27 +1,17 @@
 pluginManagement {
-    def flutterSdkPath = {
-        def properties = new Properties()
-        def file = new File(rootDir, 'local.properties')
-        if (file.exists()) {
-            file.withReader('UTF-8') { reader -> properties.load(reader) }
-        }
-        def sdkPath = properties.getProperty('flutter.sdk')
-        if (!sdkPath) {
-            sdkPath = System.getenv('FLUTTER_ROOT') ?: System.getenv('FLUTTER_HOME')
-        }
-        if (!sdkPath) {
-            try {
-                def flutterBin = "which flutter".execute().text.trim()
-                if (flutterBin) {
-                    sdkPath = new File(flutterBin).parentFile.parent
-                }
-            } catch (Exception e) {}
-        }
-        assert sdkPath, "flutter.sdk not set"
-        return sdkPath
-    }()
+    def properties = new Properties()
+    def file = new File(rootDir, 'local.properties')
+    if (file.exists()) {
+        file.withReader('UTF-8') { reader -> properties.load(reader) }
+    }
+    def sdkPath = properties.getProperty('flutter.sdk') ?: System.getenv('FLUTTER_ROOT') ?: System.getenv('FLUTTER_HOME')
+    if (!sdkPath && java.lang.System.getProperty('flutter.sdk')) {
+        sdkPath = java.lang.System.getProperty('flutter.sdk')
+    }
 
-    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+    if (sdkPath && new File("$sdkPath/packages/flutter_tools/gradle/build.gradle.kts").exists()) {
+        includeBuild("$sdkPath/packages/flutter_tools/gradle")
+    }
 
     repositories {
         google()
@@ -31,9 +21,37 @@ pluginManagement {
 }
 
 plugins {
-    id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+    id "dev.flutter.flutter-plugin-loader" version "1.0.0" apply false
     id "com.android.application" version "7.4.2" apply false
     id "org.jetbrains.kotlin.android" version "1.8.22" apply false
 }
 
-include ":app"
+include ':app'
+
+def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
+def properties = new Properties()
+
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        properties.load(reader)
+    }
+}
+
+def flutterSdkPath = properties.getProperty("flutter.sdk")
+if (!flutterSdkPath) {
+    flutterSdkPath = System.getenv("FLUTTER_ROOT") ?: System.getenv("FLUTTER_HOME")
+}
+if (!flutterSdkPath && java.lang.System.getProperty("flutter.sdk")) {
+    flutterSdkPath = java.lang.System.getProperty("flutter.sdk")
+}
+
+assert flutterSdkPath != null, "flutter.sdk not set in local.properties and FLUTTER_ROOT not set"
+
+def modernGradle = new File("$flutterSdkPath/packages/flutter_tools/gradle/build.gradle.kts").exists()
+if (modernGradle) {
+    apply plugin: "dev.flutter.flutter-plugin-loader"
+} else {
+    apply from: "$flutterSdkPath/packages/flutter_tools/gradle/app_plugin_loader.gradle"
+}
+
+
