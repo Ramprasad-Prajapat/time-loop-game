@@ -8,6 +8,15 @@ pluginManagement {
     if (!sdkPath && java.lang.System.getProperty('flutter.sdk')) {
         sdkPath = java.lang.System.getProperty('flutter.sdk')
     }
+    if (!sdkPath) {
+        try {
+            def whichCmd = System.getProperty("os.name").toLowerCase().contains("win") ? "where flutter" : "which flutter"
+            def flutterBin = whichCmd.execute().text.trim().split("\r?\n")[0]
+            if (flutterBin) {
+                sdkPath = new File(flutterBin).parentFile.parent
+            }
+        } catch (Exception e) {}
+    }
 
     if (sdkPath && new File("$sdkPath/packages/flutter_tools/gradle/build.gradle.kts").exists()) {
         includeBuild("$sdkPath/packages/flutter_tools/gradle")
@@ -44,8 +53,17 @@ if (!flutterSdkPath) {
 if (!flutterSdkPath && java.lang.System.getProperty("flutter.sdk")) {
     flutterSdkPath = java.lang.System.getProperty("flutter.sdk")
 }
+if (!flutterSdkPath) {
+    try {
+        def whichCmd = System.getProperty("os.name").toLowerCase().contains("win") ? "where flutter" : "which flutter"
+        def flutterBin = whichCmd.execute().text.trim().split("\r?\n")[0]
+        if (flutterBin) {
+            flutterSdkPath = new File(flutterBin).parentFile.parent
+        }
+    } catch (Exception e) {}
+}
 
-assert flutterSdkPath != null, "flutter.sdk not set in local.properties and FLUTTER_ROOT not set"
+assert flutterSdkPath != null, "flutter.sdk not set in local.properties, FLUTTER_ROOT, or PATH"
 
 def modernGradle = new File("$flutterSdkPath/packages/flutter_tools/gradle/build.gradle.kts").exists()
 if (modernGradle) {
@@ -53,5 +71,3 @@ if (modernGradle) {
 } else {
     apply from: "$flutterSdkPath/packages/flutter_tools/gradle/app_plugin_loader.gradle"
 }
-
-
