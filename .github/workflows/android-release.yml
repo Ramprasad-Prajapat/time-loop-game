@@ -61,7 +61,7 @@ jobs:
       - name: Build release APK
         run: |
           chmod +x android/gradlew
-          flutter build apk --release --android-skip-build-dependency-validation
+          flutter build apk --release --verbose --android-skip-build-dependency-validation
 
       - name: Locate APK
         id: locate_apk
