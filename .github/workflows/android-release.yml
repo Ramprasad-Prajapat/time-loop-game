@@ -46,6 +46,9 @@ jobs:
       - name: Show Flutter version
         run: flutter --version
 
+      - name: Accept Android SDK Licenses
+        run: yes | flutter doctor --android-licenses || true
+
       - name: Run flutter doctor
         run: flutter doctor -v
 

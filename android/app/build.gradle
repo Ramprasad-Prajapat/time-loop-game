@@ -14,7 +14,7 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace "com.timeloopescapes.game"
-    compileSdkVersion 34
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -32,7 +32,7 @@ android {
     defaultConfig {
         applicationId "com.timeloopescapes.game"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
