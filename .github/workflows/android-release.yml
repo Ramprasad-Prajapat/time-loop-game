@@ -64,7 +64,7 @@ jobs:
       - name: Build release APK
         run: |
           chmod +x android/gradlew
-          flutter build apk --release --verbose
+          flutter build apk --release --verbose > build.log 2>&1 || (cat build.log | tail -n 150 && exit 1)
 
       - name: Locate APK
         id: locate_apk
