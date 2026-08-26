@@ -59,7 +59,9 @@ jobs:
         run: flutter test
 
       - name: Build release APK
-        run: flutter build apk --release
+        run: |
+          chmod +x android/gradlew
+          flutter build apk --release
 
       - name: Locate APK
         id: locate_apk
