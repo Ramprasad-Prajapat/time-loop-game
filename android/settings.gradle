@@ -6,10 +6,10 @@ pluginManagement {
             file.withReader('UTF-8') { reader -> properties.load(reader) }
         }
         def sdkPath = properties.getProperty('flutter.sdk')
-        if (sdkPath == null) {
+        if (!sdkPath) {
             sdkPath = System.getenv('FLUTTER_ROOT') ?: System.getenv('FLUTTER_HOME')
         }
-        if (sdkPath == null) {
+        if (!sdkPath) {
             try {
                 def flutterBin = "which flutter".execute().text.trim()
                 if (flutterBin) {
@@ -17,7 +17,7 @@ pluginManagement {
                 }
             } catch (Exception e) {}
         }
-        assert sdkPath != null, "flutter.sdk not set"
+        assert sdkPath, "flutter.sdk not set"
         return sdkPath
     }()
 
