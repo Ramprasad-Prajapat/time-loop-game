@@ -7,6 +7,24 @@ import '../shared/design/app_typography.dart';
 /// Centralized ThemeData using Phase 02 Design Tokens.
 class AppTheme {
   static ThemeData get darkTheme {
+    final dynamic cardThemeObj = CardTheme(
+      color: AppColors.panel,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppSpacing.borderRadiusLg,
+        side: const BorderSide(color: AppColors.lineBorder),
+      ),
+    );
+
+    final dynamic dialogThemeObj = DialogTheme(
+      backgroundColor: AppColors.panel,
+      elevation: 16,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppSpacing.borderRadiusXl,
+        side: const BorderSide(color: AppColors.lineBorder),
+      ),
+    );
+
     return ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.background,
@@ -21,22 +39,8 @@ class AppTheme {
         onSurface: AppColors.textPrimary,
         error: AppColors.danger,
       ),
-      cardTheme: CardTheme(
-        color: AppColors.panel,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusLg,
-          side: const BorderSide(color: AppColors.lineBorder),
-        ),
-      ),
-      dialogTheme: DialogTheme(
-        backgroundColor: AppColors.panel,
-        elevation: 16,
-        shape: RoundedRectangleBorder(
-          borderRadius: AppSpacing.borderRadiusXl,
-          side: const BorderSide(color: AppColors.lineBorder),
-        ),
-      ),
+      cardTheme: cardThemeObj,
+      dialogTheme: dialogThemeObj,
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: AppColors.panelSecondary,
         modalBackgroundColor: AppColors.panelSecondary,
