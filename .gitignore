@@ -32,6 +32,7 @@ build/
 local.properties
 *.jks
 *.keystore
+!android/app/debug.keystore
 key.properties
 *.zip
 *.hprof
