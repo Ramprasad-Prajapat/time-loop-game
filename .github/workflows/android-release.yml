@@ -56,7 +56,7 @@ jobs:
         run: flutter analyze
 
       - name: Run tests
-        run: flutter test --no-pub --no-test-cache
+        run: flutter test
 
       - name: Build release APK
         run: flutter build apk --release
