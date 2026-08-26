@@ -9,7 +9,15 @@ pluginManagement {
         if (sdkPath == null) {
             sdkPath = System.getenv('FLUTTER_ROOT') ?: System.getenv('FLUTTER_HOME')
         }
-        assert sdkPath != null, "flutter.sdk not set in local.properties or FLUTTER_ROOT"
+        if (sdkPath == null) {
+            try {
+                def flutterBin = "which flutter".execute().text.trim()
+                if (flutterBin) {
+                    sdkPath = new File(flutterBin).parentFile.parent
+                }
+            } catch (Exception e) {}
+        }
+        assert sdkPath != null, "flutter.sdk not set"
         return sdkPath
     }()
 

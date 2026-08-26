@@ -61,6 +61,7 @@ jobs:
       - name: Build release APK
         run: |
           chmod +x android/gradlew
+          export FLUTTER_ROOT=$FLUTTER_HOME
           flutter build apk --release --android-skip-build-dependency-validation
 
       - name: Locate APK
