@@ -14,13 +14,13 @@ if (!flutterRoot && java.lang.System.getProperty('flutter.sdk')) {
     flutterRoot = java.lang.System.getProperty('flutter.sdk')
 }
 if (!flutterRoot) {
-    try {
-        def whichCmd = System.getProperty("os.name").toLowerCase().contains("win") ? "where flutter" : "which flutter"
-        def flutterBin = whichCmd.execute().text.trim().split("\r?\n")[0]
-        if (flutterBin) {
-            flutterRoot = new File(flutterBin).parentFile.parent
-        }
-    } catch (Exception e) {}
+    def pathEnv = System.getenv("PATH") ?: ""
+    def flutterDir = pathEnv.split(File.pathSeparator).find { dir ->
+        new File(dir, "flutter").exists() || new File(dir, "flutter.bat").exists()
+    }
+    if (flutterDir) {
+        flutterRoot = new File(flutterDir).parent
+    }
 }
 assert flutterRoot != null, "Flutter SDK path not found"
 

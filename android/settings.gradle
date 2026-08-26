@@ -9,13 +9,13 @@ pluginManagement {
         sdkPath = java.lang.System.getProperty('flutter.sdk')
     }
     if (!sdkPath) {
-        try {
-            def whichCmd = System.getProperty("os.name").toLowerCase().contains("win") ? "where flutter" : "which flutter"
-            def flutterBin = whichCmd.execute().text.trim().split("\r?\n")[0]
-            if (flutterBin) {
-                sdkPath = new File(flutterBin).parentFile.parent
-            }
-        } catch (Exception e) {}
+        def pathEnv = System.getenv("PATH") ?: ""
+        def flutterDir = pathEnv.split(File.pathSeparator).find { dir ->
+            new File(dir, "flutter").exists() || new File(dir, "flutter.bat").exists()
+        }
+        if (flutterDir) {
+            sdkPath = new File(flutterDir).parent
+        }
     }
 
     if (sdkPath && new File("$sdkPath/packages/flutter_tools/gradle/build.gradle.kts").exists()) {
@@ -37,7 +37,7 @@ plugins {
 
 include ':app'
 
-def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
+def localPropertiesFile = new File(rootDir, "local.properties")
 def properties = new Properties()
 
 if (localPropertiesFile.exists()) {
@@ -54,13 +54,13 @@ if (!flutterSdkPath && java.lang.System.getProperty("flutter.sdk")) {
     flutterSdkPath = java.lang.System.getProperty("flutter.sdk")
 }
 if (!flutterSdkPath) {
-    try {
-        def whichCmd = System.getProperty("os.name").toLowerCase().contains("win") ? "where flutter" : "which flutter"
-        def flutterBin = whichCmd.execute().text.trim().split("\r?\n")[0]
-        if (flutterBin) {
-            flutterSdkPath = new File(flutterBin).parentFile.parent
-        }
-    } catch (Exception e) {}
+    def pathEnv = System.getenv("PATH") ?: ""
+    def flutterDir = pathEnv.split(File.pathSeparator).find { dir ->
+        new File(dir, "flutter").exists() || new File(dir, "flutter.bat").exists()
+    }
+    if (flutterDir) {
+        flutterSdkPath = new File(flutterDir).parent
+    }
 }
 
 assert flutterSdkPath != null, "flutter.sdk not set in local.properties, FLUTTER_ROOT, or PATH"
