@@ -14,7 +14,7 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace "com.timeloopescapes.game"
-    compileSdkVersion 35
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -32,7 +32,7 @@ android {
     defaultConfig {
         applicationId "com.timeloopescapes.game"
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 35
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -41,9 +41,8 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.debug
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            shrinkResources false
         }
     }
 }
