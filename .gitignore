@@ -35,5 +35,9 @@ local.properties
 !android/app/debug.keystore
 key.properties
 *.zip
+*.msi
+time-loop-escape-release-apk/
+build_metadata.txt
 *.hprof
 .flutter_temp/
+
